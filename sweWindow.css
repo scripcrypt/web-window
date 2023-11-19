@@ -1,0 +1,287 @@
+@import url('https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&display=swap');
+
+
+:root {
+	--sweWindow-border: 1px solid rgb(88, 88, 88);
+	--sweWindow-background-color: rgb(48, 48, 48);
+	--sweWindow-font-color: rgb(240, 240, 240);
+	--sweWindow-padding-size: 5px;
+
+	--sweWindow-border-radius: 4px;
+	--sweWindow-box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.2);
+
+	--sweWindow-header-height: 24px;
+	--sweWindow-header-padding-top: 2px;
+	--sweWindow-header-padding-right: 2px;
+	--sweWindow-header-padding-bottom: 2px;
+	--sweWindow-header-padding-left: 12px;
+	--sweWindow-header-font-color: rgb(255, 255, 255);
+	--sweWindow-header-font-weight: 700;
+	--sweWindow-header-background-color: rgb(22, 22, 22);
+	--sweWindow-header-font-size: 14px;
+	--sweWindow-header-button-minimize: rgb(128, 128, 42);
+	--sweWindow-header-button-minimize-hover: rgb(165, 165, 0);
+	--sweWindow-header-button-maximize: rgb(19, 104, 19);
+	--sweWindow-header-button-maximize-hover: rgb(0, 129, 0);
+	--sweWindow-header-button-close: rgb(128, 31, 31);
+	--sweWindow-header-button-close-hover: rgb(165, 0, 0);
+
+	--sweWindow-header-dragging-font-color: rgb(32, 32, 32);
+	--sweWindow-header-dragging-background-color: rgb(136, 173, 173);
+}
+
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	background-color: rgb(84, 84, 84);
+	font-family: 'Sawarabi Gothic', sans-serif;
+}
+
+#screen {
+	width: 100vw;
+	height: 100vh;
+}
+#hogehoge {
+	width: 600px;
+	height: 400px;
+	position: absolute;
+	top: 100px;
+	left: 100px;
+}
+#udauda {
+	width: 800px;
+	height: 200px;
+	position: absolute;
+	top: 40px;
+	left: 700px;
+}
+
+
+
+.sweWindowFrame {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	border-radius: var(--sweWindow-border-radius);
+	border: none;
+	background-color: var(--sweWindow-background-color);
+	color: var(--sweWindow-font-color);
+	padding: 0;
+	border-radius: var(--sweWindow-border-radius);
+	box-shadow: var(--sweWindow-box-shadow);
+	z-index: 0;
+}
+
+.sweWindow {
+	display: linline-block;
+	height: calc(100% - var(--sweWindow-header-height));
+	background-color: var(--sweWindow-background-color);
+	color: var(--sweWindow-font-color);
+	padding: var(--sweWindow-padding-size);
+	border-radius: var(--sweWindow-border-radius);
+}
+
+.sweWindowFrame.dragging .sweWindowHeader {
+	color: var(--sweWindow-header-dragging-font-color);
+	background-color: var(--sweWindow-header-dragging-background-color);
+}
+
+.sweWindowFrame.minimize .sweWindowHeader {
+	border-bottom-left-radius: var(--sweWindow-border-radius);
+	border-bottom-right-radius: var(--sweWindow-border-radius);
+}
+
+.sweWindowFrame .sweWindowHeader {
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 100%;
+	display: flex;
+	flex-wrap: nowrap;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	min-height: 14px;
+	height: var(--sweWindow-header-height);
+	background-color: var(--sweWindow-header-background-color);
+	color: var(--sweWindow-header-font-color);
+	font-weight: var(--sweWindow-header-font-weight);
+	font-size: var(--sweWindow-header-font-size);
+
+	padding-top: var(--sweWindow-header-padding-top);
+	padding-right: var(--sweWindow-header-padding-right);
+	padding-bottom: var(--sweWindow-header-padding-bottom);
+	padding-left: var(--sweWindow-header-padding-left);
+
+	border-top-left-radius: var(--sweWindow-border-radius);
+	border-top-right-radius: var(--sweWindow-border-radius);
+}
+
+
+.sweWindowHeader .sweWindowHeaderTitle {
+	background-color: transparent;
+	user-select: none;
+	padding-left: 10px;
+	width: calc(100% - 60px);
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+
+.sweWindowHeader .sweWindowHeaderButtons {
+	display: flex;
+	flex-wrap: nowrap;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+	width: 50px;
+	margin-right: 10px;
+	background-color: transparent;
+}
+
+.sweWindowHeaderButtons button {
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 12px;
+    height: 12px;
+    text-decoration: none;
+    text-align: center;
+	border: none;
+	outline: none;
+	color: #FFF;
+}
+.sweWindowHeaderButtons button.minimize {
+	background: var(--sweWindow-header-button-minimize);
+}
+.sweWindowHeaderButtons button.minimize:hover {
+	background: var(--sweWindow-header-button-minimize-hover);
+}
+.sweWindowHeaderButtons button.maximize {
+	background: var(--sweWindow-header-button-maximize);
+}
+.sweWindowHeaderButtons button.maximize:hover {
+	background: var(--sweWindow-header-button-maximize-hover);
+}
+.sweWindowHeaderButtons button.close {
+	background: var(--sweWindow-header-button-close);
+}
+.sweWindowHeaderButtons button.close:hover {
+	background: var(--sweWindow-header-button-close-hover);
+}
+.sweWindowHeaderButtons button:not(:last-child) {
+	margin-right: 5px;
+}
+
+
+.sweWindowFrame .sweWindow_resize_top {
+	position: absolute;
+	top: -2px;
+	left: 4px;
+	height: 4px;
+	width: calc(100% - 8px);
+	background-color: transparent;
+}
+.sweWindowFrame .sweWindow_resize_top:hover {
+	cursor: ns-resize;
+}
+.sweWindowFrame .sweWindow_resize_topRight {
+	position: absolute;
+	top: -2px;
+	right: -4px;
+	height: 8px;
+	width: 8px;
+	background-color: transparent;
+}
+.sweWindowFrame .sweWindow_resize_topRight:hover {
+	cursor: nesw-resize;
+}
+.sweWindowFrame .sweWindow_resize_right {
+	position: absolute;
+	top: 4px;
+	right: -2px;
+	height: calc(100% - 8px);
+	width: 4px;
+	background-color: transparent;
+}
+.sweWindowFrame .sweWindow_resize_right:hover {
+	cursor: ew-resize;
+}
+.sweWindowFrame .sweWindow_resize_rightBottom {
+	position: absolute;
+	bottom: -2px;
+	right: -2px;
+	height: 8px;
+	width: 8px;
+	background-color: transparent;
+}
+.sweWindowFrame .sweWindow_resize_rightBottom:hover {
+	cursor: nwse-resize;
+}
+.sweWindowFrame .sweWindow_resize_bottom {
+	position: absolute;
+	bottom: -2px;
+	left: 4px;
+	height: 4px;
+	width: calc(100% - 8px);
+	background-color: transparent;
+}
+.sweWindowFrame .sweWindow_resize_bottom:hover {
+	cursor: ns-resize;
+}
+.sweWindowFrame .sweWindow_resize_bottomLeft {
+	position: absolute;
+	bottom: -2px;
+	left: -2px;
+	height: 8px;
+	width: 8px;
+	background-color: transparent;
+}
+.sweWindowFrame .sweWindow_resize_bottomLeft:hover {
+	cursor: nesw-resize;
+}
+.sweWindowFrame .sweWindow_resize_left {
+	position: absolute;
+	top: 4px;
+	left: -2px;
+	height: calc(100% - 8px);
+	width: 4px;
+	background-color: transparent;
+}
+.sweWindowFrame .sweWindow_resize_left:hover {
+	cursor: ew-resize;
+}
+.sweWindowFrame .sweWindow_resize_leftTop {
+	position: absolute;
+	top: -2px;
+	left: -2px;
+	height: 8px;
+	width: 8px;
+	background-color: transparent;
+}
+.sweWindowFrame .sweWindow_resize_leftTop:hover {
+	cursor: nwse-resize;
+}
+
+.sweWindowMinimizeZone {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	height: var(--sweWindow-header-height);
+	z-index: 5;
+/*
+	background-color: orange;
+	opacity: 0.1;
+*/
+}
