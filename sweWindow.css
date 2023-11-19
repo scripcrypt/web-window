@@ -44,20 +44,63 @@
 	height: 100vh;
 }
 #hogehoge {
-	width: 600px;
-	height: 400px;
+	width: 700px;
+	height: 700px;
 	position: absolute;
 	top: 100px;
 	left: 100px;
 }
-#udauda {
+#ugauga {
 	width: 800px;
-	height: 200px;
+	height: 250px;
 	position: absolute;
 	top: 40px;
-	left: 700px;
+	left: 400px;
 }
-
+#bahibahi {
+	width: 700px;
+	height: 450px;
+	position: absolute;
+	top: 250px;
+	left: 250px;
+}
+#yagiyagi {
+	width: 900px;
+	height: 250px;
+	position: absolute;
+	top: 450px;
+	left: 500px;
+}
+#guriguri {
+	width: 900px;
+	height: 250px;
+	position: absolute;
+	top: 150px;
+	left: 20px;
+}
+h3 {
+	padding: 8px;
+}
+pre {
+	white-space: pre-line;
+	padding: 8px;
+	background-color: transparent;
+	overflow-y: auto;
+}
+.center {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	padding: 8px 0;
+	background-color: transparent;
+}
+.row {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: flex-start;
+	padding: 8px;
+}
 
 
 .sweWindowFrame {
@@ -83,6 +126,10 @@
 	color: var(--sweWindow-font-color);
 	padding: var(--sweWindow-padding-size);
 	border-radius: var(--sweWindow-border-radius);
+	overflow: hidden;
+}
+.sweWindow * {
+	background-color: transparent;
 }
 
 .sweWindowFrame.dragging .sweWindowHeader {
