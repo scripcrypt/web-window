@@ -61,7 +61,7 @@
 	width: 700px;
 	height: 450px;
 	position: absolute;
-	top: 250px;
+	top: 50px;
 	left: 250px;
 }
 #yagiyagi {
@@ -105,10 +105,6 @@ pre {
 
 .sweWindowFrame {
 	position: absolute;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: center;
 	border-radius: var(--sweWindow-border-radius);
 	border: none;
 	background-color: var(--sweWindow-background-color);
@@ -120,13 +116,13 @@ pre {
 }
 
 .sweWindow {
-	display: linline-block;
-	height: calc(100% - var(--sweWindow-header-height));
+	display: block;
+	height: auto;
 	background-color: var(--sweWindow-background-color);
 	color: var(--sweWindow-font-color);
 	padding: var(--sweWindow-padding-size);
 	border-radius: var(--sweWindow-border-radius);
-	overflow: hidden;
+	overflow: auto;
 }
 .sweWindow * {
 	background-color: transparent;

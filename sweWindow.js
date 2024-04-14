@@ -175,9 +175,9 @@ class sweWinwow {
 		};
 
 
-		/*--------------------------------------------------
+		/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 			Resize Window
-		--------------------------------------------------*/
+		=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 		resizeWindow = async (resizeTo) => {
 
 			const resizeFrom = this.frNode.status;
@@ -226,15 +226,26 @@ class sweWinwow {
 			const resizeName = resizeFrom+"2"+resizeTo;
 			const [point,size] = this[resizeName]();
 
-
 			// ウィンドウリサイズアニメーション
 			await this.windowResizeAnimation(point,size,resizeFrom=="minimize" ? true : false);
 
 			// アニメーション終了後
 			this.afterAnim();
 
+			// コンテントウィンドウの高さを揃える
+			this.adjust_wdNode_height();
+
 			this.frNode.status = resizeTo;
 
+		};
+
+
+		/*-------------------------------------------------
+			コンテントウィンドウの高さを揃える
+		-------------------------------------------------*/
+		adjust_wdNode_height = () => {
+			const height = this.frNode.offsetHeight - this.resizeInfo.hdHeight;
+			this.wdNode.style.height=height+"px";
 		};
 
 
@@ -635,6 +646,8 @@ class sweWinwow {
 						this.frNode.style.left = wdPos.left + mXdiff + "px";
 					}
 
+					// コンテントウィンドウの高さを揃える
+					this.adjust_wdNode_height();
 
 				};
 	
