@@ -244,7 +244,7 @@ class sweWinwow {
 			コンテントウィンドウの高さを揃える
 		-------------------------------------------------*/
 		adjust_wdNode_height = () => {
-			const height = this.frNode.offsetHeight - this.hdNode.hdHeight;
+			const height = this.frNode.offsetHeight - this.hdNode.offsetHeight;
 			this.wdNode.style.height=height+"px";
 		};
 
