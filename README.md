@@ -2,7 +2,7 @@
 ## 1.概要
 sweWindowは、Vanilla JSで動作するブラウザ上で使えるウィンドウ・マネージャです。
 
-![Screen capture](sweWindow-screenShot.png)
+![Screen capture](sweWindow-screenShot2.png)
 
 基本的にWindowsやMacと同じようなウィンドウ機能です。<br>
 ウィンドウヘッダーをドラッグして移動でき、各辺と各角をドラッグしてリサイズ出来ます。<br>
