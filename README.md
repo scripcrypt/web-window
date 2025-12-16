@@ -57,77 +57,80 @@ const newScreen = new sweScreen(targetScreen);
 > - 省略すると `<body>` をスクリーンとします。
 
 起動すると、スクリーン要素内の .sweWindow 要素を探して全てウィンドウ化します。<br>
-###3.2 ウィンドウの設定<br>
+### 3.2 ウィンドウの設定<br>
 各ウィンドウの初期設定は、.sweWindow要素の属性として設定する仕様となっています。.sweWindow要素の中身はウィンドウ内のコンテンツをそのまま記してください。<br><br>
 
 ### window-id: abcdefg
-このウィンドウを外部からも操作したい場合に、ウィンドウを特定する為に用いるIDです。
+> このウィンドウを外部からも操作したい場合に、ウィンドウを特定する為に用いるIDです。
 
 ### window-title: ウィンドウのタイトル文
-ここにウィンドウのタイトルを記入します。何文字でも設定できますが、長くなると省略されます。タスクバーも同様です。
+> ここにウィンドウのタイトルを記入します。何文字でも設定できますが、長くなると省略されます。タスクバーも同様です。
 
 ### rect: { top: 80, left: 80, width: 300, height: 300 },
 #### top, left
-スクリーンに左上を0 x 0とした相対位置ウィンドウの左上を設定します（単位はピクセル）。省略した場合はスクリーン右上の80px x 80px に配置されますが、２個めからズレて配置されます。（これの設定は、sweScreenクラスのdefaultConfigに定義されています。
+> スクリーンに左上を0 x 0とした相対位置ウィンドウの左上を設定します（単位はピクセル）。省略した場合はスクリーン右上の80px x 80px に配置されますが、２個めからズレて配置されます。（これの設定は、sweScreenクラスのdefaultConfigに定義されています。
 #### width, height
-ウィンドウの初期時の大きさを指定します。省略すると300px x 300pxになります。これも同じ場所で初期値の設定が可能です。
+> ウィンドウの初期時の大きさを指定します。省略すると300px x 300pxになります。これも同じ場所で初期値の設定が可能です。
 
 ### url: "https://～"
-.sweWindowの中を空にして、別ファイルを取り込むことも出来ます。
+> .sweWindowの中を空にして、別ファイルを取り込むことも出来ます。
 
 ### html: "<div>コンテンツ</div>"
-.sweWindowの中を空にしておいて、ここに書く事も出来ます（使い道は思いつきませんが・・・）
+> .sweWindowの中を空にしておいて、ここに書く事も出来ます（使い道は思いつきませんが・・・）
 
 ### type: "html"
-これはウィンドウのコンテンツタイプです。コンテンツタイプ毎にヘッダーにアイコンを付けようとしていますが、未完成です。
+> これはウィンドウのコンテンツタイプです。コンテンツタイプ毎にヘッダーにアイコンを付けようとしていますが、未完成です。
 
 ### minSize: { width: 800, height: 400 },
-これはウィンドウリサイズした時の限界まで小さくできる制限です。省略すると 200px x 200px になります。変更したい場合はsweScreenクラスのdefaultConfigを変更してください。
+> これはウィンドウリサイズした時の限界まで小さくできる制限です。省略すると 200px x 200px になります。変更したい場合はsweScreenクラスのdefaultConfigを変更してください。
 
 ### focus: false
-起動時にアクティブにするかどうかを決めます。省略するとアクティブになります。省略時の挙動も変更できますが、true/false のどちらかです。
+> 起動時にアクティブにするかどうかを決めます。省略するとアクティブになります。省略時の挙動も変更できますが、true/false のどちらかです。
 
 ### idDup: "error"
-ウィンドウ起動時に window-id が被った場合の挙動を設定します。
+> ウィンドウ起動時に window-id が被った場合の挙動を設定します。
 
 #### 選択肢
-"error" 無視してウィンドウを生成しない。<br>
-"replace"   同名のwindow-idを閉じて新しいウィンドウとしてせいせいします。<br>
-"new"   新しいランダムなwindow-idを付けて生成します。<br><br>
-
+```text
+**error** 無視してウィンドウを生成しない。<br>
+**replace**   同名のwindow-idを閉じて新しいウィンドウとしてせいせいします。<br>
+**new**   新しいランダムなwindow-idを付けて生成します。<br><br>
+```
 初期値では起動しない（ウィンドウが出来ない）となっていますが、これも同様に変更可能です。
 
 ### startStatus: "normal"
-ウィンドウ生成時の状態を設定します。省略すると通常のウィンドウとして生成されます。
+> ウィンドウ生成時の状態を設定します。省略すると通常のウィンドウとして生成されます。
 
 #### 選択肢
-"normal"    普通のウィンドウ<br>
-"maximize"  最大化状態<br>
-"minimize"  最小化状態<br><br>
-
+```text
+**normal**    普通のウィンドウ<br>
+**maximize**  最大化状態<br>
+**minimize**  最小化状態<br><br>
+```
 ### flags: { resizable: true, movable: true, closable: true, minimizable: true, maximizable: true }
 各種機能制限。ウィンドウに本来ある機能を一部制限します。（未実装）
 
-    - resizable
-    サイズ変更の可否を設定します。<br>
-    制限する場合は false、デフォルトは true
+```text
+- resizable
+サイズ変更の可否を設定します。<br>
+制限する場合は false、デフォルトは true
 
-    - movable
-    移動の可否を設定します。<br>
-    true/false デフォルトは true
+- movable
+移動の可否を設定します。<br>
+true/false デフォルトは true
 
-    - closable
-    閉じる事を制限します。<br>
-    true/false デフォルトは true
+- closable
+閉じる事を制限します。<br>
+true/false デフォルトは true
 
-    - minimizable
-    最小化する事を制限します。<br>
-    true/false デフォルトは true
+- minimizable
+最小化する事を制限します。<br>
+true/false デフォルトは true
 
-    - maximizable
-    最大化する事を制限します。<br>
-    true/false デフォルトは true
-
+- maximizable
+最大化する事を制限します。<br>
+true/false デフォルトは true
+```
 ### 3.2 ウィンドウの追加
 javascriptからウィンドウを追加する事が出来ます。やり方は２通り。
 
@@ -136,7 +139,6 @@ javascriptからウィンドウを追加する事が出来ます。やり方は�
 ```js
 newScreen.buildWindow();
 ```
-
 何も引数を設定しなければスクリーン内にある .sweWindow 要素を全てウィンドウ化します。<br>
 引数に文字を指定した場合は、要素を探して全てウィンドウ化します。<br>
 引数に要素を渡すとその要素をウィンドウ化します。<br>
@@ -196,8 +198,18 @@ action には、以下の４つが指定できます。
 ### javascript
 | クラス名 | 対象 | 用途 |
 |---------|------|------|
-| **sweScreen** | 要素の .sweScreen がインスタンスとなる | .スクリーン・ウィンドウ管理クラス、外部からはこのクラス・インスタンスを操作する　|
-| **sweWindow** | 要素の .sweWindow がインスタンスとなる | ウィンドウ毎のクラスインスタンス |
+| **sweScreen** | 要素の .sweScreen がインスタンス | .スクリーン・ウィンドウ管理クラス、外部からはこのクラス・インスタンスを操作する　|
+| **sweWindow** | 要素の .sweWindow がインスタンス | ウィンドウ毎のクラスインスタンス |
+
+```js
+const newScreen = document.querySelector("#screen");
+new sweScreen(newScreen);
+newScreen.sweScreen.ctrlWin(target, action);
+```
+```js
+const newWindow = document.querySelector("#window");
+newScreen.sweScreen.ctrlWin(target, action);
+```
 
 ### DOM構造
 ウィンドウ化された要素は以下のような構造になります。
