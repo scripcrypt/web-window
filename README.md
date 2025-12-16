@@ -49,8 +49,8 @@ const newScreen = new sweWindowScreen("#targetScreen");
 const targetScreen = document.querySelector("#targetScreen");
 const newScreen = new sweWindowScreen(targetScreen);
 ```
-<br>
-のような形でスクリーン要素をそのまま渡す事も出来ます。<br>
+
+のような形でスクリーン要素をそのまま渡す事も出来ます。
 > ❗ **Important**
 > - 現状ではインスタンス化時に複数のスクリーンを変換する機能を有していません。
 > - ".scrren" みたいな形で指定して、コード上に .scrren 要素が複数あった場合には、最初の .scrren だけがスクリーン化されます。
