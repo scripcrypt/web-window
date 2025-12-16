@@ -36,7 +36,7 @@ sweWindowは、Vanilla JSで動作するブラウザ上で使えるウィンド�
 スクリーン下部にタスクバーが生成されます。スクリーン内にウィンドウが無い場合は表示されません。<br>
 
 ## 3. 使用方法
-###3.1 起動
+### 3.1 起動
 スクリーンを司る、sweWindowScreen クラス（javascriptのクラス）をインスタンス化すると本機能は開始します。<br>
 sweWindowScreenをインスタンス化する時に、どこをスクリーン化するのかを指定する事が出来ます。<br>
 
@@ -67,7 +67,7 @@ const newScreen = new sweWindowScreen(targetScreen);
 #### window-title: ウィンドウのタイトル文
 ここにウィンドウのタイトルを記入します。何文字でも設定できますが、長くなると省略されます。タスクバーも同様です。
 
-##### rect: { top: 80, left: 80, width: 300, height: 300 },
+#### rect: { top: 80, left: 80, width: 300, height: 300 },
 ##### top, left
 スクリーンに左上を0 x 0とした相対位置ウィンドウの左上を設定します（単位はピクセル）。省略した場合はスクリーン右上の80px x 80px に配置されますが、２個めからズレて配置されます。（これの設定は、sweWindowScreenクラスのdefaultConfigに定義されています。
 ##### width, height
