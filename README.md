@@ -13,6 +13,7 @@ sweWindowは、Vanilla JSで動作するブラウザ上で使えるウィンド�
 最小化（タスクバーに内包され非表示）されているウィンドウは、タスクバーのボタンを押すと、元に戻ります（元の状態が最大化されていれば最大化）。<br><br>
 
 ## 2. 基本構成
+sweWindow.js と sweWindow.css を読み込んでください。ファイルはそれだけです。見た目を変えたい方は sweWindow.css を書き換えて下さい。
 - .sweScreen 要素の中に、.sweWindow を並べて初期化すると、.sweScreen を枠として、.sweWindow 一つずつがウィンドウになります。
 - .sweScreen は複数置く事が出来ます。更に多段式（ウィンドウの中にスクリーンを設ける事）も出来ます。
 <br>
@@ -43,13 +44,28 @@ sweScreenをインスタンス化する時に、どこをスクリーン化す�
 const newScreen = new sweScreen("#targetScreen");
 ```
 
-として起動すると、id="targetScreen"をスクリーンとして、タスクバーが生成され、その中にある（直下のみ）.sweWindowクラスのある要素がウィンドウ化します。
+として起動すると、id="targetScreen"をスクリーンとして、タスクバーが生成され、その中にある（直下のみ）.sweWindowクラスのある要素がウィンドウ化します。<br>
 
 ```js
 const newScreen = new sweScreen(document.querySelector("#targetScreen"));
 ```
+のような形でスクリーン要素をそのまま渡す事も出来ます。<br>
+この時、#targetScreen に sweScreen クラスの付与は必要ありません。<br>
 
-のような形でスクリーン要素をそのまま渡す事も出来ます。
+### サンプルHTML
+```html
+<div id="screen" class="sweScreen">
+    <div window-id="sampleWindow-15" window-title="ここにヘッダータイトルが入る" height="640" width="722" top="100" left="900" type="data" class="sweWindow">
+    ウィンドウマネージャーとは、GUI（グラフィカルユーザーインターフェース）上でウィンドウの表示位置、サイズ、外観、操作（移動・拡大縮小・切り替えなど）を管理するプログラムのことです。<br>
+    デスクトップ環境の一部として機能し、開いているウィンドウを整理し、マウスやキーボードによる操作を可能にして、使いやすいデスクトップを提供します（例：Windowsのdwm、macOSのQuartz、Linuxのi3、Awesomeなど）。
+    </div>
+    <div window-id="php8.5" window-title="PHP 8.5 が出るという事のようです" width="1000" height="600" type="article" url="window_content_6.html" class="sweWindow"></div>	
+</div>
+```
+```text
+idは関係ありません。クラスにそれぞれ .sweScreen, .swdWindow が入っていれば自動生成します。
+スクリーン要素を引数にしてスクリーン生成する場合は、.sweScreen は必要ありません。
+```
 > ❗ **Important**
 > - 現状ではインスタンス化時に複数のスクリーンを変換する機能を有していません。
 > - ".scrren" みたいな形で指定して、コード上に .scrren 要素が複数あった場合には、最初の .scrren だけがスクリーン化されます。
@@ -110,26 +126,25 @@ const newScreen = new sweScreen(document.querySelector("#targetScreen"));
 ### flags: { resizable: true, movable: true, closable: true, minimizable: true, maximizable: true }
 各種機能制限。ウィンドウに本来ある機能を一部制限する事が出来ます。（未実装）
 
-```text
-- resizable
-サイズ変更の可否を設定します。
-制限する場合は false、デフォルトは true
+#### resizable
+> サイズ変更の可否を設定します。
+> 制限する場合は false、デフォルトは true
 
-- movable
-移動の可否を設定します。
-true/false デフォルトは true
+#### movable
+> 移動の可否を設定します。
+> true/false デフォルトは true
 
-- closable
-閉じる事を制限します。
-true/false デフォルトは true
+#### closable
+> 閉じる事を制限します。
+> true/false デフォルトは true
 
-- minimizable
-最小化する事を制限します。
-true/false デフォルトは true
+#### minimizable
+> 最小化する事を制限します。
+> true/false デフォルトは true
 
-- maximizable
-最大化する事を制限します。
-true/false デフォルトは true
+#### maximizable
+> 最大化する事を制限します。
+> true/false デフォルトは true
 ```
 ### サンプルHTML
 ```html
@@ -148,7 +163,7 @@ javascriptからウィンドウを追加する事が出来ます。やり方は�
 ```js
 newScreen.buildWindow();
 ```
-何も引数を設定しなければスクリーン内にある .sweWindow 要素を全てウィンドウ化します。<br>
+引数に何も設定しなければスクリーン内にある .sweWindow 要素を全てウィンドウ化します。<br>
 引数に文字を指定した場合は、要素を探して全てウィンドウ化します。<br>
 引数に要素を渡すとその要素をウィンドウ化します。<br>
 ウィンドウの初期設定は属性に記します。<br>
@@ -211,7 +226,6 @@ newScreen.sweScreen.createWindow(document.querySelector("#window"), {windowId:"t
 theWindow = newScreen.getWindow("theWindow");
 theWindow.ctrlWin(action);
 ```
-
 <br><br>
 
 ## 4. 構成
