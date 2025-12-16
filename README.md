@@ -173,8 +173,6 @@ content: {kind:"url", value:"window_content_7.html"}<br>
 スクリーン要素の sweScreen がスクリーンインスタンスとなっていますので、そこから、ターゲットとなるウィンドウを指定して、ctrlWin コマンドで操作する事が出来ます。<br>
 または、ウィドウ要素の sweWindow がインスタンスとなっているので、直接そこから ctrlWin を投入する事も出来ます。<br><br>
 
-#### 3.3.1 ctrlWinの仕様
-##### スクリーンからの操作
 ```js
 newScreen.sweScreen.ctrlWin(target, action);
 targetWindow.ctrlWin(action);
