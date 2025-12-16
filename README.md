@@ -13,8 +13,8 @@ sweWindowは、Vanilla JSで動作するブラウザ上で使えるウィンド�
 最小化（タスクバーに内包され非表示）されているウィンドウは、タスクバーのボタンを押すと、元に戻ります（元の状態が最大化されていれば最大化）。<br><br>
 
 ## 2. 基本構成
-- .sweWindowScreen 要素の中に、.sweWindow を並べて初期化すると、.sweWindowScreen を枠として、.sweWindow 一つずつがウィンドウになります。
-- .sweWindowScreen は複数置く事が出来ます。更に多段式（ウィンドウの中にスクリーンを設ける事）も出来ます。
+- .sweScreen 要素の中に、.sweWindow を並べて初期化すると、.sweScreen を枠として、.sweWindow 一つずつがウィンドウになります。
+- .sweScreen は複数置く事が出来ます。更に多段式（ウィンドウの中にスクリーンを設ける事）も出来ます。
 <br>
 
 ```html
@@ -36,18 +36,18 @@ sweWindowは、Vanilla JSで動作するブラウザ上で使えるウィンド�
 
 ## 3. 使用方法
 ### 3.1 起動
-スクリーンを司る、sweWindowScreen クラス（javascriptのクラス）をインスタンス化すると本機能は開始します。<br>
-sweWindowScreenをインスタンス化する時に、どこをスクリーン化するのかを指定する事が出来ます。<br>
+スクリーンを司る、sweScreen クラス（javascriptのクラス）をインスタンス化すると本機能は開始します。<br>
+sweScreenをインスタンス化する時に、どこをスクリーン化するのかを指定する事が出来ます。<br>
 
 ```html
-const newScreen = new sweWindowScreen("#targetScreen");
+const newScreen = new sweScreen("#targetScreen");
 ```
 
 として起動すると、id="targetScreen"をスクリーンとして、タスクバーが生成され、その中にある（直下のみ）.sweWindowクラスのある要素がウィンドウ化します。<br>
 
 ```html
 const targetScreen = document.querySelector("#targetScreen");
-const newScreen = new sweWindowScreen(targetScreen);
+const newScreen = new sweScreen(targetScreen);
 ```
 
 のような形でスクリーン要素をそのまま渡す事も出来ます。
@@ -68,7 +68,7 @@ const newScreen = new sweWindowScreen(targetScreen);
 
 ### rect: { top: 80, left: 80, width: 300, height: 300 },
 #### top, left
-スクリーンに左上を0 x 0とした相対位置ウィンドウの左上を設定します（単位はピクセル）。省略した場合はスクリーン右上の80px x 80px に配置されますが、２個めからズレて配置されます。（これの設定は、sweWindowScreenクラスのdefaultConfigに定義されています。
+スクリーンに左上を0 x 0とした相対位置ウィンドウの左上を設定します（単位はピクセル）。省略した場合はスクリーン右上の80px x 80px に配置されますが、２個めからズレて配置されます。（これの設定は、sweScreenクラスのdefaultConfigに定義されています。
 #### width, height
 ウィンドウの初期時の大きさを指定します。省略すると300px x 300pxになります。これも同じ場所で初期値の設定が可能です。
 
@@ -82,7 +82,7 @@ const newScreen = new sweWindowScreen(targetScreen);
 これはウィンドウのコンテンツタイプです。コンテンツタイプ毎にヘッダーにアイコンを付けようとしていますが、未完成です。
 
 ### minSize: { width: 800, height: 400 },
-これはウィンドウリサイズした時の限界まで小さくできる制限です。省略すると 200px x 200px になります。変更したい場合はsweWindowScreenクラスのdefaultConfigを変更してください。
+これはウィンドウリサイズした時の限界まで小さくできる制限です。省略すると 200px x 200px になります。変更したい場合はsweScreenクラスのdefaultConfigを変更してください。
 
 ### focus: false
 起動時にアクティブにするかどうかを決めます。省略するとアクティブになります。省略時の挙動も変更できますが、true/false のどちらかです。
@@ -194,8 +194,10 @@ action には、以下の４つが指定できます。
 基本構成はシンプルです。<br>
 
 ### javascript
-| **sweWindowScreen** | 要素の sweScreen がインスタンスとなる } .スクリーン・ウィンドウ管理クラス、外部からはこのクラス・インスタンスを操作する　|
-| **sweWindow** | 要素の .sweWindow がインスタンスとなる } ウィンドウ毎のクラスインスタンス |
+| クラス名 | 対象 | 用途 |
+|---------|------|------|
+| **sweScreen** | 要素の .sweScreen がインスタンスとなる | .スクリーン・ウィンドウ管理クラス、外部からはこのクラス・インスタンスを操作する　|
+| **sweWindow** | 要素の .sweWindow がインスタンスとなる | ウィンドウ毎のクラスインスタンス |
 
 ### DOM構造
 ウィンドウ化された要素は以下のような構造になります。
