@@ -108,23 +108,23 @@ const newScreen = new sweWindowScreen(targetScreen);
 #### flags: { resizable: true, movable: true, closable: true, minimizable: true, maximizable: true }
 各種機能制限。ウィンドウに本来ある機能を一部制限します。（未実装）
 
-##### resizable
+- resizable
 サイズ変更の可否を設定します。<br>
 制限する場合は false、デフォルトは true
 
-##### movable
+- movable
 移動の可否を設定します。<br>
 true/false デフォルトは true
 
-##### closable
+- closable
 閉じる事を制限します。<br>
 true/false デフォルトは true
 
-##### minimizable
-最小化する事を制限します。<br>
-true/false デフォルトは true
+    - minimizable
+    最小化する事を制限します。<br>
+    true/false デフォルトは true
 
-##### maximizable
+ - maximizable
 最大化する事を制限します。<br>
 true/false デフォルトは true
 
@@ -132,9 +132,10 @@ true/false デフォルトは true
 javascriptからウィンドウを追加する事が出来ます。やり方は２通り。
 
 #### 3.2.1 ウィンドウ要素を先に用意
-スクリーン要素内に新しいウィンドウ要素(.sweWindow)を追加して、スクリーンインスタンスに指示を出す。<br>
-newScreen.buildWindow();<br><br>
-
+スクリーン要素内に新しいウィンドウ要素(.sweWindow)を追加して、スクリーンインスタンスに指示を出す。
+```js
+newScreen.buildWindow();
+```
 
 何も引数を設定しなければスクリーン内にある .sweWindow 要素を全てウィンドウ化します。<br>
 引数に文字を指定した場合は、要素を探して全てウィンドウ化します。<br>
@@ -142,9 +143,10 @@ newScreen.buildWindow();<br><br>
 ウィンドウの初期設定は属性に記します。<br><br>
 
 #### 3.2.2 JSONで値を渡して生成
-引数にJSON形式で指示を書き、ウィンドウを生成する事も出来ます。<br>
-newScreen.createWindow(JSON);<br><br>
-
+引数にJSON形式で指示を書き、ウィンドウを生成する事も出来ます。
+```js
+newScreen.createWindow(JSON);
+```
 ##### JSONの書式
 基本的に上述した属性に記す方法と同じですが一部違うのでご注意ください。
 
