@@ -13,7 +13,8 @@ sweWindowは、Vanilla JSで動作するブラウザ上で使えるウィンド�
 最小化（タスクバーに内包され非表示）されているウィンドウは、タスクバーのボタンを押すと、元に戻ります（元の状態が最大化されていれば最大化）。<br><br>
 
 ## 2. 基本構成
-sweWindow.js と sweWindow.css を読み込んでください。ファイルはそれだけです。見た目を変えたい方は sweWindow.css を書き換えて下さい。
+## ✅ sweWindow.js と sweWindow.css を読み込んでください。ファイルはそれだけです。
+見た目を変えたい方は sweWindow.css を書き換えて下さい。
 - .sweScreen 要素の中に、.sweWindow を並べて初期化すると、.sweScreen を枠として、.sweWindow 一つずつがウィンドウになります。
 - .sweScreen は複数置く事が出来ます。更に多段式（ウィンドウの中にスクリーンを設ける事）も出来ます。
 <br>
@@ -34,6 +35,31 @@ sweWindow.js と sweWindow.css を読み込んでください。ファイルは�
 ```
 
 スクリーン下部にタスクバーが生成されます。スクリーン内にウィンドウが無い場合は表示されません。<br><br>
+
+### javascript
+| クラス名 | 対象 | 用途 |
+|---------|------|------|
+| **sweScreen** | 要素の .sweScreen がインスタンス | .スクリーン・ウィンドウ管理クラス、外部からはこのクラス・インスタンスを操作する　|
+| **sweWindow** | 要素の .sweWindow がインスタンス | ウィンドウ毎のクラスインスタンス |
+
+
+### DOM構造
+ウィンドウ化された要素は以下のような構造になります。
+
+```html
+<div class="sweWindow">
+  <div class="sweWindowHeader">
+    <span class="title">TITLE</span>
+    <div class="sweWindowHeaderButtons">
+      <button class="minimize"></button>
+      <button class="maximize"></button>
+      <button class="close"></button>
+    </div>
+  </div>
+  <div class="sweWindowContent"></div>
+</div>
+```
+<br><br>
 
 ## 3. 使用方法
 ### 3.1 起動
@@ -226,30 +252,3 @@ newScreen.sweScreen.createWindow(document.querySelector("#window"), {windowId:"t
 theWindow = newScreen.getWindow("theWindow");
 theWindow.ctrlWin(action);
 ```
-<br><br>
-
-## 4. 構成
-基本構成はシンプルです。<br>
-
-### javascript
-| クラス名 | 対象 | 用途 |
-|---------|------|------|
-| **sweScreen** | 要素の .sweScreen がインスタンス | .スクリーン・ウィンドウ管理クラス、外部からはこのクラス・インスタンスを操作する　|
-| **sweWindow** | 要素の .sweWindow がインスタンス | ウィンドウ毎のクラスインスタンス |
-
-
-### DOM構造
-ウィンドウ化された要素は以下のような構造になります。
-
-```html
-<div class="sweWindow">
-  <div class="sweWindowHeader">
-    <span class="title">TITLE</span>
-    <div class="sweWindowHeaderButtons">
-      <button class="minimize"></button>
-      <button class="maximize"></button>
-      <button class="close"></button>
-    </div>
-  </div>
-  <div class="sweWindowContent"></div>
-</div>
