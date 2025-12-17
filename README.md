@@ -102,7 +102,7 @@ idは関係ありません。クラスにそれぞれ .sweScreen, .swdWindow が
 ### 3.2 ウィンドウの設定
 各ウィンドウの初期設定は、.sweWindow要素の属性として設定する仕様となっています。.sweWindow要素の中身はウィンドウ内のコンテンツをそのまま記してください。
 
-### window-id: abcdefg
+### window-id: web-Bgs7Sha
 > このウィンドウを外部からも操作したい場合に、ウィンドウを特定する為に用いるIDです。
 
 ### window-title: ウィンドウのタイトル文
@@ -126,8 +126,8 @@ idは関係ありません。クラスにそれぞれ .sweScreen, .swdWindow が
 ### minSize: { width: 800, height: 400 },
 > これはウィンドウリサイズした時の限界まで小さくできる制限です。省略すると 200px x 200px になります。変更したい場合はsweScreenクラスのdefaultConfigを変更してください。
 
-### focus: false
-> 起動時にアクティブにするかどうかを決めます。省略するとアクティブになります。省略時の挙動も変更できますが、true/false のどちらかです。
+### focus: "false"
+> 起動時にアクティブにするかどうかを決めます。省略するとアクティブになります。省略時の挙動も変更できますが、"true","false" のどちらかです。
 
 ### idDup: "error"
 > ウィンドウ起動時に window-id が被った場合の挙動を設定します。
@@ -184,17 +184,15 @@ idは関係ありません。クラスにそれぞれ .sweScreen, .swdWindow が
 ### 3.3 ウィンドウの追加
 javascriptからウィンドウを追加する事が出来ます。やり方は２通り。
 
-#### 3.3.1 ウィンドウ要素を先に用意
+> ウィンドウ要素を先に用意
 スクリーン要素内に新しいウィンドウ要素(.sweWindow)を追加して、スクリーンインスタンスに指示を出す。
 ```js
-newScreen.buildWindow();
+newScreen.createWindow();
 ```
 引数に何も設定しなければスクリーン内にある .sweWindow 要素を全てウィンドウ化します。<br>
 引数に文字を指定した場合は、要素を探して全てウィンドウ化します。<br>
 引数に要素を渡すとその要素をウィンドウ化します。<br>
 ウィンドウの初期設定は属性に記します。<br>
-
-#### 3.3.2 JSONで値を渡して生成
 引数にJSON形式で指示を書き、ウィンドウを生成する事も出来ます。
 ```js
 newScreen.createWindow(JSON);
@@ -227,10 +225,12 @@ json = {
 外部 javascript からウィンドウを操作する事が出来ます。<br>
 スクリーン要素の sweScreen がスクリーンインスタンスとなっていますので、そこから、ターゲットとなるウィンドウを指定して、ctrlWin コマンドで操作する事が出来ます。<br>
 または、ウィドウ要素の sweWindow がインスタンスとなっているので、直接そこから ctrlWin を投入する事も出来ます。<br>
-
+ウィンドウのインスタンスはウィンドウ要素から取れるが、ウィンドウ要素は sweScreen インスタンスから取得する事が出来る。
 ```js
-newScreen.sweScreen.ctrlWin(target, action);
-targetWindow.ctrlWin(action);
+const targetWindow = newScreen.sweScreen.getWindow("web-Bgs7Sha");
+
+newScreen.sweScreen.ctrlWin(targetWindow, action);
+targetWindow.sweWindow.ctrlWin(action);
 ```
 target には文字列でウィンドウIDを入れます。生成時にwindow-idを付与しなかった場合は自動採番されます。ウィンドウ要素に window-id 属性がついていますので、それを参照してください。<br>
 target にはまた、要素そのものを設定する事も出来ます。

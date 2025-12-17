@@ -27,6 +27,7 @@ class sweScreen {
 	_num(v) {
 		return (v == null || v === "") ? null : Number(v);
 	}
+	defaultConfig;
 
 
 	/*--------------------------------------------------
@@ -38,7 +39,7 @@ class sweScreen {
 			? document.querySelector(screen)
 			: (screen === null ? document.body : screen);
 
-		const defaultConfig = {
+		this.defaultConfig = {
 			rect: { top: 80, left: 80, width: 300, height: 300 },
 			type: "html",
 			minSize: { width: 200, height: 200 },
@@ -54,8 +55,15 @@ class sweScreen {
 			}
 		};
 
-		this.config = this.configMerge(defaultConfig, config);
-		console.log("Screen Config", JSON.stringify(this.config));
+		this.buildAllWindows(config);
+
+	}
+
+
+
+	buildAllWindows = (config) => {
+		this.config = this.configMerge(this.defaultConfig, config);
+		//console.log("Screen Config", JSON.stringify(this.config));
 
 		// scNode がまともなノードじゃなければ何もしない
 		if (!this.scNode || this.scNode.nodeType !== 1) return;
@@ -78,7 +86,6 @@ class sweScreen {
 		}
 
 		this.openWindows(wds);
-
 	}
 
 
@@ -86,31 +93,38 @@ class sweScreen {
 		if (!wds) return;
 
 		// NodeList → 配列 にして map
-		let wn = 0;
 		let focus;
 		Promise.all(
-			[...wds].map(sww => {
-				const parsedConfig = this._parseWindowDecl(sww);
-				if (parsedConfig) {
-					const config = this.configMerge(this.config, parsedConfig);
-					if (config.focus) { focus = sww; }
-					sww.sweWindow = new sweWindow(sww, this, wn++);
-					this.registerWindow(sww.sweWindow, config.windowId);
-					return sww.sweWindow.init(config);
-				}
+			[...wds].map(async (sww) => {
+				await this.buildWindow(sww);
 			})
 		).then(instances => {
 			this.scNode.classList.remove("invisible");
-			if (focus) {
+			if ((typeof focus === "Boolean" && focus) || (typeof focus === "string" && focus === "true")) {
 				focus.sweWindow.bringToFront();
 			}
 			else {
-				this.windows[wn - 1].bringToFront();
+				this.windows[this.windows.length - 1].bringToFront();
 			}
 		});
 
 		this.resizeScreenEvent();
 	};
+
+
+
+	buildWindow = (sww) => {
+		//		console.log(sww);
+		const parsedConfig = this._parseWindowDecl(sww);
+		if (parsedConfig) {
+			const config = this.configMerge(this.config, parsedConfig);
+			if (config.focus) { focus = sww; }
+			const wn = this.windows.length;
+			sww.sweWindow = new sweWindow(sww, this, wn);
+			this.registerWindow(sww.sweWindow, config.windowId);
+			return sww.sweWindow.init(config);
+		}
+	}
 
 
 	/**
@@ -201,7 +215,7 @@ class sweScreen {
 		}
 		if (rc) {
 			this.rectSlide += 50;
-			console.log("this.rectSlide", this.rectSlide);
+			//console.log("this.rectSlide", this.rectSlide);
 		}
 		if (!rect.width || rect.width < this.config.minSize.width) {
 			rect.width = this.config.minSize.width;
@@ -232,17 +246,17 @@ class sweScreen {
 
 
 	_resolveDupWindowId = (id, idDup = null) => {
-		console.log("this.winById.id", id);
-		console.log("this.winById.has.id", this.winById.has(id));
+		//console.log("this.winById.id", id);
+		//console.log("this.winById.has.id", this.winById.has(id));
 		idDup = idDup ?? this.config.idDup;
-		console.log("idDup", idDup);
+		//console.log("idDup", idDup);
 		// ID重複
 		if (this.winById.has(id)) {
-			console.log("idDup", this.config.idDup);
+			//console.log("idDup", this.config.idDup);
 			switch (idDup) {
 				case "replace":
 					const old = this.winById.get(id);
-					console.log(id, old);
+					//console.log(id, old);
 					this.closeWin(old);
 					break;
 				case "newid":
@@ -262,11 +276,11 @@ class sweScreen {
 
 
 	/*--------------------------------------------------
-		Get Window by Id
+		Get Window Instance by Id
 	--------------------------------------------------*/
-	async createWindow(opts = {}) {
-		console.log("ops", this.config);
-	};
+	getWindowInstance(id) {
+		return this.winById.get(id) || null;
+	}
 
 
 
@@ -274,7 +288,7 @@ class sweScreen {
 		Get Window by Id
 	--------------------------------------------------*/
 	getWindow(id) {
-		return this.winById.get(id) || null;
+		return this.winById.get(id).frNode || null;
 	}
 
 
@@ -345,21 +359,21 @@ class sweScreen {
 	ctrlWin = (target = null, action = null) => {
 		if (!target || !action) return;
 
-		const win = this.getWindow(target);
+		const wininst = this.getWindowInstance(target);
 
-		if (win) {
+		if (wininst) {
 			switch (action) {
 				case "focus":
-					win.bringToFront();
+					wininst.bringToFront();
 					break;
 				case "maximize":
-					win.resizeWindow("maximize");
+					wininst.resizeWindow("maximize");
 					break;
 				case "minimize":
-					win.resizeWindow("minimize");
+					wininst.resizeWindow("minimize");
 					break;
 				case "close":
-					this.closeWin(win);
+					this.closeWin(wininst);
 			}
 		}
 	};
@@ -371,13 +385,13 @@ class sweScreen {
 	closeWin = (win = null) => {
 		if (!win) return;
 		win.closeWindow().then(p => {
-			console.log("win", win);
+			//console.log("win", win);
 			this.unregisterWindow(win);
 
 			setTimeout(() => {
 				if (win.frNode.classList.contains("closing")) {
-					console.log("windows", this.windows);
-					console.log("winById", this.winById);
+					//console.log("windows", this.windows);
+					//console.log("winById", this.winById);
 				}
 			}, 1000);
 		});
@@ -399,18 +413,28 @@ class sweScreen {
 	/*----------------------------------------------------
 		UnRegister Window
 	----------------------------------------------------*/
-	createWindow = async (opts) => {
+	createWindow = async (opts = null) => {
+		if (!opts) {
+			this.buildAllWindows();
+			return;
+		}
+
+		if (opts instanceof Element) {
+			await this.buildWindow(opts);
+			return;
+		}
+
 		opts.windowId = this._resolveDupWindowId(opts.windowId, opts.idDup);
 		if (!opts.windowId) return;
 
 		const sww = document.createElement("div");
 		sww.classList.add("sweWindow");
 		this.scNode.append(sww);
-		console.log("rect1", JSON.stringify(opts.rect));
+		//console.log("rect1", JSON.stringify(opts.rect));
 		opts.rect = this._resolveRect(opts.rect);
-		console.log("rect2", JSON.stringify(opts.rect));
+		//console.log("rect2", JSON.stringify(opts.rect));
 		const config = this.configMerge(this.config, opts);
-		console.log("config", JSON.stringify(config));
+		//console.log("config", JSON.stringify(config));
 		const wn = this.windows.length;
 		sww.sweWindow = new sweWindow(sww, this, wn);
 		this.registerWindow(sww.sweWindow, config.windowId);
@@ -466,7 +490,7 @@ class sweScreen {
 	_showWinById = (id = null) => {
 		if (!this.winById.has(id)) return;
 
-		console.log(id, this.winById.get(id).title);
+		//console.log(id, this.winById.get(id).title);
 
 	}
 
@@ -508,7 +532,7 @@ class sweWindow {
 		this.wdNode = input;
 		this.scInst = scInst;
 		this.frZ = frZ;
-		this.scNode = this.wdNode.closest(".sweScreen");
+		this.scNode = this.scInst.scNode;
 		this.tbNode = this.scNode.querySelector(".sweTaskbar");
 
 	}
@@ -555,6 +579,9 @@ class sweWindow {
 		// コンテンツの高さ調整
 		this.adjust_wdNode_height();
 
+		// bringToFront ?
+		this.activateToByConfig();
+
 		this.frNode.sweWindow = this;
 
 		return this;
@@ -599,6 +626,8 @@ class sweWindow {
 
 		// window-id を付加
 		this.frNode.setAttribute("window-id", this.winid);
+		this.wdNode.removeAttribute("window-id");
+		this.wdNode.classList.add("sweWindow");
 
 		// Z-index の設定
 		this.setZindex();
@@ -642,6 +671,7 @@ class sweWindow {
 		this.rect = config.rect;
 		this.startStatus = config.startStatus;
 		this.type = config.type;
+		this.focus = config.focus;
 		this.winid = config.windowId;
 		this.title = config.windowTitle;
 		this.startAnimation = config.startAnimation;
@@ -814,7 +844,7 @@ class sweWindow {
 	--------------------------------------------------*/
 	bringbackStyle = () => {
 
-		console.log("rect", this.rect);
+		//console.log("rect", this.rect);
 		// 位置とサイズを戻す
 		this.frNode.style.top = this.rect.top + "px";
 		this.frNode.style.left = this.rect.left + "px";
@@ -891,7 +921,7 @@ class sweWindow {
 		タスクバーに
 	--------------------------------------------------*/
 	add2taskbar = () => {
-		console.log("add2taskbar");
+		//console.log("add2taskbar");
 		const titleNode = this.hdNode.querySelector(".sweWindowHeaderTitle");
 		this.twNode = document.createElement("button");
 		this.twNode.classList.add("sweTaskButton");
@@ -900,6 +930,22 @@ class sweWindow {
 		this.tbNode.append(this.twNode);
 
 	}
+
+
+	/*--------------------------------------------------
+		Activate
+	--------------------------------------------------*/
+	activateToByConfig = () => {
+
+		if ((typeof this.focus === "Boolean" && this.focus) || (typeof this.focus === "string" && this.focus === "true")) {
+			this.bringToFront();
+		}
+
+	}
+
+
+
+
 
 
 
@@ -957,6 +1003,22 @@ class sweWindow {
 			e.stopPropagation();
 			this.closeWindow();
 		});
+
+	};
+
+
+
+	/*--------------------------------------------------
+		外部からのコントロール
+	--------------------------------------------------*/
+	ctrlWin = (action = null) => {
+		//console.log("ctrlWin", action);
+		if (!action || !["focus", "maximize", "minimize", "close"].includes(action)) return;
+
+		if (action === "focus") { this.bringToFront(); }
+		else {
+			this.resizeWindow(action);
+		}
 
 	};
 
@@ -1066,7 +1128,7 @@ class sweWindow {
 	resizeWindow = async (resizeTo) => {
 
 		let resizeFrom;
-		console.log("resizeWindow", resizeTo);
+		//console.log("resizeWindow", resizeTo);
 
 		if (resizeTo === "close") {
 			await this.closeWindow();
@@ -1202,8 +1264,8 @@ class sweWindow {
 
 		const dx = (brect.left + brect.width / 2) - (this.rect.left + this.rect.width / 2);
 		const dy = (brect.top + brect.height / 2) - (this.rect.top + this.rect.height / 2);
-		console.log("minimize2normal dx", dx);
-		console.log("minimize2normal dy", dy);
+		//console.log("minimize2normal dx", dx);
+		//console.log("minimize2normal dy", dy);
 
 		this.frNode.style.setProperty("--restore-dx", dx + "px");
 		this.frNode.style.setProperty("--restore-dy", dy + "px");
@@ -1218,6 +1280,7 @@ class sweWindow {
 			this.frNode.style.opacity = "";
 
 			this.frNode.classList.remove("restoreAnim");
+			this.frNode.classList.remove("minimize");
 
 		}, { once: true });
 
@@ -1598,7 +1661,7 @@ class sweWindow {
 					// 縦方向
 					if (nextH !== null) this.frNode.style.height = nextH + "px";
 					if (nextTop !== null) this.frNode.style.top = nextTop + "px";
-					console.log("width x height", this.frNode.style.width, this.frNode.style.height);
+					//console.log("width x height", this.frNode.style.width, this.frNode.style.height);
 					// コンテンツの高さ調整
 					this.adjust_wdNode_height();
 
@@ -1657,10 +1720,10 @@ class sweWindow {
 					}
 
 					if (this.minSize) {
-						if (this.minSize.width) {
+						if (nextW && this.minSize.width) {
 							nextW = nextW < this.minSize.width ? this.minSize.width : nextW;
 						}
-						if (this.minSize.height) {
+						if (nextH && this.minSize.height) {
 							nextH = nextH < this.minSize.height ? this.minSize.height : nextH;
 						}
 					}
