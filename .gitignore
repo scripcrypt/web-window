@@ -1,3 +1,4 @@
 .logg.*
 /.vscode
 __bk*
+*:Zone.Identifier
