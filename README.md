@@ -117,45 +117,45 @@ new sweScreen(screen);
 ### 3.2 ウィンドウの設定
 各ウィンドウの初期設定は、.sweWindow要素の属性として設定する仕様となっています。.sweWindow要素の中身はウィンドウ内のコンテンツをそのまま記してください。
 
-### window-id: web-Bgs7Sha
+### 🔸window-id: web-Bgs7Sha
 このウィンドウを外部からも操作したい場合に、ウィンドウを特定する為に用いるIDです。
 
-### window-title: ウィンドウのタイトル文
+### 🔸window-title: ウィンドウのタイトル文
 ここにウィンドウのタイトルを記入します。何文字でも設定できますが、長くなると省略されます。タスクバーも同様です。
 
-### rect: { top: 80, left: 80, width: 300, height: 300 },
-> #### top, left
-スクリーンに左上を0 x 0とした相対位置ウィンドウの左上を設定します（単位はピクセル）。省略した場合はスクリーン右上の80px x 80px に配置されますが、２個めからズレて配置されます。（これの設定は、sweScreenクラスのdefaultConfigに定義されています。
-> #### width, height
-ウィンドウの初期時の大きさを指定します。省略すると300px x 300pxになります。これも同じ場所で初期値の設定が可能です。
+### 🔸rect: { top: 80, left: 80, width: 300, height: 300 },
+- #### top, left
+	スクリーンに左上を0 x 0とした相対位置ウィンドウの左上を設定します（単位はピクセル）。省略した場合はスクリーン右上の80px x 80px に配置されますが、２個めからズレて配置されます。（これの設定は、sweScreenクラスのdefaultConfigに定義されています。
+- #### width, height
+	ウィンドウの初期時の大きさを指定します。省略すると300px x 300pxになります。これも同じ場所で初期値の設定が可能です。
 
-- ### url: "https://～"
-	.sweWindowの中を空にして、別ファイルを取り込むことも出来ます。
+### 🔸url: "https://～"
+.sweWindowの中を空にして、別ファイルを取り込むことも出来ます。
 
-- ### html: `<div>コンテンツ</div>`
-	.sweWindowの中を空にしておいて、ここに書く事も出来ます（使い道は思いつきませんが・・・）
+### 🔸html: `<div>コンテンツ</div>`
+.sweWindowの中を空にしておいて、ここに書く事も出来ます（使い道は思いつきませんが・・・）
 
-- ### type: "html"
-	これはウィンドウのコンテンツタイプです。コンテンツタイプ毎にヘッダーにアイコンを付けようとしていますが、未完成です。
+### 🔸type: "html"
+これはウィンドウのコンテンツタイプです。コンテンツタイプ毎にヘッダーにアイコンを付けようとしていますが、未完成です。
 
-- ### minSize: { width: 800, height: 400 },
-	これはウィンドウリサイズした時の限界まで小さくできる制限です。省略すると 200px x 200px になります。変更したい場合はsweScreenクラスのdefaultConfigを変更してください。
+### 🔸minSize: { width: 800, height: 400 },
+これはウィンドウリサイズした時の限界まで小さくできる制限です。省略すると 200px x 200px になります。変更したい場合はsweScreenクラスのdefaultConfigを変更してください。
 
-- ### focus: "false"
-	起動時にアクティブにするかどうかを決めます。省略するとアクティブになります。省略時の挙動も変更できますが、"true","false" のどちらかです。
+### 🔸focus: "false"
+起動時にアクティブにするかどうかを決めます。省略するとアクティブになります。省略時の挙動も変更できますが、"true","false" のどちらかです。
 
-- ### idDup: "error"
-	ウィンドウ起動時に window-id が被った場合の挙動を設定します。
-	#### 選択肢
-	| 値 | 動作 |
-	|---|---|
-	| `error` | 無視してウィンドウを生成しない |
-	| `replace` | 同名の `window-id` を閉じて新しいウィンドウとして生成 |
-	| `new` | 新しいランダムな `window-id` を付けて生成 |
-		初期値では起動しない（ウィンドウが出来ない）となっていますが、これも同様に変更可能です。
+### 🔸idDup: "error"
+ウィンドウ起動時に window-id が被った場合の挙動を設定します。
+#### 選択肢
+| 値 | 動作 |
+|---|---|
+| `error` | 無視してウィンドウを生成しない |
+| `replace` | 同名の `window-id` を閉じて新しいウィンドウとして生成 |
+| `new` | 新しいランダムな `window-id` を付けて生成 |
 
-> ### startStatus: `"normal"`
+初期値では起動しない（ウィンドウが出来ない）となっていますが、これも同様に変更可能です。
 
+### 🔸startStatus: `"normal"`
 ウィンドウ生成時の状態を設定します。  
 省略すると通常のウィンドウとして生成されます。
 
@@ -167,7 +167,7 @@ new sweScreen(screen);
 | **minimize** | 最小化状態 |
 
 
-> ### flags: { resizable: true, movable: true, closable: true, minimizable: true, maximizable: true } ❗未実装
+### 🔸flags: { resizable: true, movable: true, closable: true, minimizable: true, maximizable: true } ❗未実装
 #### 各種機能制限
 ウィンドウに本来ある機能を一部制限する事が出来ます。
 
@@ -191,6 +191,8 @@ new sweScreen(screen);
   最大化する事を制限します。  
   `true / false`、デフォルトは `true`。
 
+<br>
+
 ### サンプルHTML  ✅ウィンドウ
 ひとつのウィンドウはこうなります。これらを複数、スクリーンの中に配置してください。全てまとめてウィンドウ化します。
 ```html
@@ -207,33 +209,36 @@ javascriptからウィンドウを追加する事が出来ます。やり方は�
 > ウィンドウ要素を先に用意
 スクリーン要素内に新しいウィンドウ要素(.sweWindow)を追加して、スクリーンインスタンスに指示を出す。
 ```js
-newScreen.createWindow();
+screen.createWindow();
 ```
 引数に何も設定しなければスクリーン内にある .sweWindow 要素を全てウィンドウ化します。<br>
 引数に文字を指定した場合は、要素を探して全てウィンドウ化します。<br>
 引数に要素を渡すとその要素をウィンドウ化します。<br>
 ウィンドウの初期設定は属性に記します。<br>
 引数にJSON形式で指示を書き、ウィンドウを生成する事も出来ます。
+
+<br>
+
 ```js
-newScreen.createWindow(JSON);
+screen.createWindow(JSON);
 ```
 #### JSONの書式
 ⚠️ 基本的に上述した属性に記す方法と同じですが一部違うのでご注意ください。
 
-	```json
-	json = {
-			"windowID": "",
-			"windowTitle": "",
-			"rect": {top: left: width: height:},
-			"content": {kind:"url", value:"window_content_7.html"},
-			"type": "",
-			"minSize": {width:, height},    
-			"forcus": true,
-			"idDup": "replace",
-			"startStatus": "normal",
-			"flags": { resizable: true, movable: true, closable: true, minimizable: true, maximizable: true },
-	}
-	```
+```json
+json = {
+		"windowID": "",
+		"windowTitle": "",
+		"rect": {top: left: width: height:},
+		"content": {kind:"url", value:"window_content_7.html"},
+		"type": "",
+		"minSize": {width:, height},    
+		"forcus": true,
+		"idDup": "replace",
+		"startStatus": "normal",
+		"flags": { resizable: true, movable: true, closable: true, minimizable: true, maximizable: true },
+}
+```
 🔴 content: {kind:"url", value:"window_content_7.html"}
 
 - kind: "url" の場合は value に url を指定します。
@@ -241,15 +246,15 @@ newScreen.createWindow(JSON);
 - kind: "node" を指定した場合は、value に、ウィンドウの要素オブジェクトを渡してください。
 <br><br>
 
-### 3.3 ウィンドウの操作
+### 3.4 ウィンドウの操作
 外部 javascript からウィンドウを操作する事が出来ます。<br>
 スクリーン要素の sweScreen がスクリーンインスタンスとなっていますので、そこから、ターゲットとなるウィンドウを指定して、ctrlWin コマンドで操作する事が出来ます。<br>
 または、ウィドウ要素の sweWindow がインスタンスとなっているので、直接そこから ctrlWin を投入する事も出来ます。<br>
 ウィンドウのインスタンスはウィンドウ要素から取れるが、ウィンドウ要素は sweScreen インスタンスから取得する事が出来る。
 ```js
-const targetWindow = newScreen.sweScreen.getWindow("web-Bgs7Sha");
+const targetWindow = screen.sweScreen.getWindow("web-Bgs7Sha");
 
-newScreen.sweScreen.ctrlWin(targetWindow, action);
+screen.sweScreen.ctrlWin(targetWindow, action);
 targetWindow.sweWindow.ctrlWin(action);
 ```
 target には文字列でウィンドウIDを入れます。生成時にwindow-idを付与しなかった場合は自動採番されます。ウィンドウ要素に window-id 属性がついていますので、それを参照してください。<br>
@@ -265,38 +270,41 @@ action には、以下の４つが指定できます。
 ```js
 const screen = document.querySelector("#screen");
 new sweScreen(screen);
-screen.sweScreen.ctrlWin(target, action);
+screen.sweScreen.ctrlWin(target, action); 👈 対象のウィンドウと共に、ACTION〈文字列）を渡す
 ```
 
 ```js
-newScreen.sweScreen.createWindow(document.querySelector("#window"), {windowId:"web-Bgs7xha",...});
-const window = newScreen.getWindow("web-Bgs7xha");
-window.ctrlWin(action);
+screen.sweScreen.createWindow(document.querySelector("#window"), {windowId:"web-Bgs7xha",...});
+const window = screen.getWindow("web-Bgs7xha");
+window.ctrlWin(action); 👈 対象のウィンドウにACTION〈文字列）を渡す
 ```
 <br>
 
-### 3.4 イベント定義
+### 3.5 イベント定義
 ウィンドウに何かeventが発生した時に起動するイベントフックを付与できます。<br>
 起動時に適宜して下さい。<br>
 
-> #### onReady
-ウィンドウが完成した時に実行します
-> #### onClose
-ウィンドウが閉じた時に実行します
-> #### onFocus
-ウィンドウがフォーカスされた時に実行します
-> #### onMaximize
-ウィンドウが最大化された時に実行します
-> #### onMUnaximize
-ウィンドウが最大化解除された時に実行します
-> #### onMinimize
-ウィンドウが最省化された時に実行します
-> #### onUnMinimize
-ウィンドウが最省化解除された時に実行します
-> #### onMoveStart
-ウィンドウが移動され始めた時に実行さいます
-> #### onMoveEnd
-ウィンドウが移動され終わった時に実行されます
+- #### onReady
+	ウィンドウが完成した時に実行します
+- #### onClose
+	ウィンドウが閉じた時に実行します
+- #### onFocus
+	ウィンドウがフォーカスされた時に実行します
+- #### onMaximize
+	ウィンドウが最大化された時に実行します
+- #### onMUnaximize
+	ウィンドウが最大化解除された時に実行します
+- #### onMinimize
+	ウィンドウが最省化された時に実行します
+- #### onUnMinimize
+	ウィンドウが最省化解除された時に実行します
+- #### onMoveStart
+	ウィンドウが移動され始めた時に実行さいます
+- #### onMoveEnd
+	ウィンドウが移動され終わった時に実行されます
+
+
+### 🎁 例として、test-sweWindow.js に、 onFocusの例を入れてますのでご参照ください。
 
 <br><br>
 
