@@ -280,7 +280,7 @@ theWindow.ctrlWin(action);
 #### onMoveEnd
 > ウィンドウが移動され終わった時に実行されます
 
-<br><br><br>
+<br><br>
 
 ## 免責
 > 本リポジトリのソースコードは MIT ライセンスです。
