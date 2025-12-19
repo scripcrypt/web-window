@@ -81,20 +81,21 @@ sweWindowは、Vanilla JSで動作するブラウザ上で使えるウィンド�
 sweScreenをインスタンス化する時に、どこをスクリーン化するのかを指定する事が出来ます。
 
 ```js
-const newScreen = new sweScreen("#targetScreen");
+new sweScreen("#targetScreen");
 ```
+として起動すると、id="targetScreen"をスクリーンとして、タスクバーが生成され、その中にある（直下のみ）.sweWindowクラスのある要素がウィンドウ化します。
 
-として起動すると、id="targetScreen"をスクリーンとして、タスクバーが生成され、その中にある（直下のみ）.sweWindowクラスのある要素がウィンドウ化します。<br>
 
 ```js
-const newScreen = new sweScreen(document.querySelector("#targetScreen"));
+const screen = document.querySelector("#targetScreen");
+new sweScreen(screen);
 ```
-のような形でスクリーン要素をそのまま渡す事も出来ます。<br>
+このような形でスクリーン要素をそのまま渡す事も出来ます。<br>
 この時、#targetScreen に sweScreen クラスの付与は必要ありません。<br>
 
-### サンプルHTML
+### サンプルHTML  ✅スクリーン
 ```html
-<div id="screen" class="sweScreen">
+<div id="targetScreen" class="sweScreen">
     <div window-id="sampleWindow-15" window-title="ここにヘッダータイトルが入る" height="640" width="722" top="100" left="900" type="data" class="sweWindow">
     ウィンドウマネージャーとは、GUI（グラフィカルユーザーインターフェース）上でウィンドウの表示位置、サイズ、外観、操作（移動・拡大縮小・切り替えなど）を管理するプログラムのことです。<br>
     デスクトップ環境の一部として機能し、開いているウィンドウを整理し、マウスやキーボードによる操作を可能にして、使いやすいデスクトップを提供します（例：Windowsのdwm、macOSのQuartz、Linuxのi3、Awesomeなど）。
@@ -103,7 +104,7 @@ const newScreen = new sweScreen(document.querySelector("#targetScreen"));
 </div>
 ```
 ```text
-idは関係ありません。クラスにそれぞれ .sweScreen, .swdWindow が入っていれば自動生成します。
+クラスにそれぞれ .sweScreen, .swdWindow が入っていれば自動生成します。（idはノートを利用する為に付けただけで本システムとは関係ありません。）<br>
 スクリーン要素を引数にしてスクリーン生成する場合は、.sweScreen は必要ありません。
 ```
 > ❗ **Important**
@@ -145,22 +146,26 @@ idは関係ありません。クラスにそれぞれ .sweScreen, .swdWindow が
 
 - ### idDup: "error"
 	ウィンドウ起動時に window-id が被った場合の挙動を設定します。
-	- #### 選択肢
-		```text
-		**error** 無視してウィンドウを生成しない。
-		**replace**   同名のwindow-idを閉じて新しいウィンドウとしてせいせいします。
-		**new**   新しいランダムなwindow-idを付けて生成します。
-		```
+	#### 選択肢
+	| 値 | 動作 |
+	|---|---|
+	| `error` | 無視してウィンドウを生成しない |
+	| `replace` | 同名の `window-id` を閉じて新しいウィンドウとして生成 |
+	| `new` | 新しいランダムな `window-id` を付けて生成 |
 		初期値では起動しない（ウィンドウが出来ない）となっていますが、これも同様に変更可能です。
 
-> ### startStatus: "normal"
-	ウィンドウ生成時の状態を設定します。省略すると通常のウィンドウとして生成されます。
-- #### 選択肢
-	| 状態 | 説明 |
-	|---|---|
-	| **normal** | 普通のウィンドウ |
-	| **maximize** | 最大化状態 |
-	| **minimize** | 最小化状態 |
+> ### startStatus: `"normal"`
+
+ウィンドウ生成時の状態を設定します。  
+省略すると通常のウィンドウとして生成されます。
+
+#### 選択肢
+| 状態 | 説明 |
+|---|---|
+| **normal** | 普通のウィンドウ |
+| **maximize** | 最大化状態 |
+| **minimize** | 最小化状態 |
+
 
 > ### flags: { resizable: true, movable: true, closable: true, minimizable: true, maximizable: true } ❗未実装
 #### 各種機能制限
@@ -186,7 +191,8 @@ idは関係ありません。クラスにそれぞれ .sweScreen, .swdWindow が
   最大化する事を制限します。  
   `true / false`、デフォルトは `true`。
 
-### サンプルHTML
+### サンプルHTML  ✅ウィンドウ
+ひとつのウィンドウはこうなります。これらを複数、スクリーンの中に配置してください。全てまとめてウィンドウ化します。
 ```html
 <div window-id="sampleWindow-15" window-title="ここにウィンドウヘッダーのタイトルが入る" height="640" width="722" top="100" left="900" type="data" class="sweWindow">
 ウィンドウマネージャーとは、GUI（グラフィカルユーザーインターフェース）上でウィンドウの表示位置、サイズ、外観、操作（移動・拡大縮小・切り替えなど）を管理するプログラムのことです。<br>
@@ -295,5 +301,6 @@ window.ctrlWin(action);
 <br><br>
 
 ## 免責
-> 本リポジトリのソースコードは MIT ライセンスです。<br>
-> 基本的に自由に利用できますが、詳細は各ソースファイル内のコメントをご確認ください。
+```md
+本リポジトリのソースコードは MIT ライセンスです。
+基本的に自由に利用できますが、詳細は各ソースファイル内のコメントをご確認ください。
