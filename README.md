@@ -4,8 +4,10 @@ sweWindowは、Vanilla JSで動作するブラウザ上で使えるウィンド�
 
 ![Screen capture](sweWindow-screenShot2.png)
 
-![基本中の基本](本システムは swdWindow.js と sweWindow.css だけです。-af1554)
-<kbd>本システムは swdWindow.js と sweWindow.css だけです。</kbd>
+## 基本中の基本
+<blockquote>
+  <h2>本システムは <code>sweWindow.js</code> と <code>sweWindow.css</code> だけです。</h2>
+</blockquote>
 
 基本的にWindowsやMacと同じようなウィンドウ機能です。<br>
 ウィンドウヘッダーをドラッグして移動でき、各辺と各角をドラッグしてリサイズ出来ます。<br>
@@ -14,6 +16,15 @@ sweWindowは、Vanilla JSで動作するブラウザ上で使えるウィンド�
 最小化してもしなくてもタスクバーにはウィンドウのボタンが表示されており、タスクバーとウィンドウは１：１の関係です。<br>
 タスクバーのボタンを押すと、ウィンドウが前面で出て来ます。既に前面にある場合には最小化されます。<br>
 最小化（タスクバーに内包され非表示）されているウィンドウは、タスクバーのボタンを押すと、元に戻ります（元の状態が最大化されていれば最大化）。<br><br>
+<blockquote>
+  <h2 style="color: red;">❗重要</h2>
+  <div style="font-size: 1.2em; font-weight: bold;">
+    index.html と、test-sweWindow.js を見て戴ければ大体の使い方は分かると思います。<br>
+		また、sweWindow.css ではある程度変数化してますので、お気楽に見た目の変更をして下さい。
+  </div>
+</blockquote>
+
+<br><br>
 
 ## 2. 基本構成
 ## ✅ sweWindow.js と sweWindow.css を読み込んでください。ファイルはそれだけです。
@@ -23,14 +34,14 @@ sweWindowは、Vanilla JSで動作するブラウザ上で使えるウィンド�
 <br>
 
 ```html
-<div.id="targetScreen" class=".swdWindowScreen">
-    <div class=".sweWindow">
+<div class="swdScreen">
+    <div class="sweWindow">
         ・・・
     </div>
-    <div class=".sweWindow">
+    <div class="sweWindow">
         ・・・
     </div>
-    <div class=".sweWindow">
+    <div class="sweWindow">
         ・・・
     </div>
 </div>
@@ -283,5 +294,5 @@ theWindow.ctrlWin(action);
 <br><br>
 
 ## 免責
-> 本リポジトリのソースコードは MIT ライセンスです。
+> 本リポジトリのソースコードは MIT ライセンスです。<br>
 > 基本的に自由に利用できますが、詳細は各ソースファイル内のコメントをご確認ください。
