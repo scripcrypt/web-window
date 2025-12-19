@@ -1,15 +1,14 @@
-window.onload = (e) => {
+window.addEventListener('load', function () {
 
 	const screens = document.querySelectorAll(".sweScreen");
 
 	if (screens.length > 0) {
-		var sweScreens = {};
 		screens.forEach(ssr => {
-			ssr.sweScreens = new sweScreen(ssr, {});
+			ssr.sweScreens = new sweScreen(ssr, { onFocus: focusWindow });
 		});
 	}
 
-}
+});
 
 
 
@@ -23,12 +22,13 @@ class sweScreen {
 	winds = {};
 	winById = new Map()
 	rectSlide = 50;
+	initBuild = false;
 	attributes = ["window-title", "type", "resizable", "movable", "closable", "minimizable", "maximizable", "min-width", "min-height", "url", "html"];
 	_num(v) {
 		return (v == null || v === "") ? null : Number(v);
-	}
+	};
 
-	DEFAULT_CONFIG = Object.freeze({
+	DEFAULT_CONFIG = {
 		rect: { top: 80, left: 80, width: 300, height: 300 },
 		type: "html",
 		minSize: { width: 200, height: 200 },
@@ -42,7 +42,7 @@ class sweScreen {
 			minimizable: true,
 			maximizable: true
 		}
-	});
+	};
 
 
 	/*--------------------------------------------------
@@ -54,13 +54,21 @@ class sweScreen {
 			? document.querySelector(screen)
 			: (screen === null ? document.body : screen);
 
-		this.buildAllWindows(config);
+		//		this.configMerge = this.mergeConfig;
+		this.configMerge = this.objectMerge;
+
+		this.ready = (async () => {
+			await this.buildAllWindows(config);
+			this.initBuild = true;
+			return this;
+		})();
 
 	}
 
 
 
 	buildAllWindows = (config) => {
+		//		this.config = this.configMerge(this.DEFAULT_CONFIG, config);
 		this.config = this.configMerge(this.DEFAULT_CONFIG, config);
 		//console.log("Screen Config", JSON.stringify(this.config));
 
@@ -116,6 +124,7 @@ class sweScreen {
 		//		console.log(sww);
 		const parsedConfig = this._parseWindowDecl(sww);
 		if (parsedConfig) {
+			//const config = this.configMerge(this.config, parsedConfig);
 			const config = this.configMerge(this.config, parsedConfig);
 			if (config.focus) { focus = sww; }
 			const wn = this.windows.length;
@@ -319,7 +328,7 @@ class sweScreen {
 	/*--------------------------------------------------
 		Reorder Z-index
 	--------------------------------------------------*/
-	reorderZ(win = null) {
+	reorderZ(win = null, focus = true) {
 
 		// ---- 引数なし：詰めるだけ（順番は変えない）----
 		if (!win) {
@@ -346,7 +355,7 @@ class sweScreen {
 		}
 
 		// 最前面化（必要なら）
-		this.windows[last].bringToFront?.();
+		if (focus) { this.windows[last].bringToFront?.(); console.log("HEN"); }
 
 	}
 
@@ -445,7 +454,7 @@ class sweScreen {
 	}
 
 
-	configMerge = (target, source) => {
+	mergeConfig = (target, source) => {
 		if (typeof target !== 'object' || target === null || Array.isArray(target)) {
 			return source;
 		}
@@ -463,13 +472,69 @@ class sweScreen {
 				typeof sourceValue === 'object' && sourceValue !== null && !Array.isArray(sourceValue) &&
 				typeof targetValue === 'object' && targetValue !== null && !Array.isArray(targetValue)
 			) {
-				output[key] = this.configMerge(targetValue, sourceValue);
+				output[key] = this.mergeConfig(targetValue, sourceValue);
 			} else {
 				output[key] = sourceValue;
 			}
 		}
 
 		return output;
+	}
+
+
+
+	objectMerge(...sources) {
+		const isPlainObject = (v) => {
+			if (v === null || typeof v !== "object") return false;
+			const proto = Object.getPrototypeOf(v);
+			return proto === Object.prototype || proto === null;
+		};
+
+		const cloneValue = (v) => {
+			if (Array.isArray(v)) return v.map(cloneValue);
+			if (isPlainObject(v)) {
+				const out = {};
+				for (const k of Reflect.ownKeys(v)) out[k] = cloneValue(v[k]);
+				return out;
+			}
+			// 関数、DOM、Date、Map、Set、クラスインスタンス等は参照のまま
+			return v;
+		};
+
+		const mergeInto = (dst, src) => {
+			if (src == null) return dst;
+
+			for (const key of Reflect.ownKeys(src)) {
+				const sVal = src[key];
+				const dVal = dst[key];
+
+				if (isPlainObject(dVal) && isPlainObject(sVal)) {
+					// 両方 plain object → 再帰
+					dst[key] = mergeInto(dVal, sVal);
+				} else if (Array.isArray(sVal)) {
+					// 配列は上書き（deep copy）
+					dst[key] = sVal.map(cloneValue);
+				} else if (isPlainObject(sVal)) {
+					// plain object は deep copy を入れる（参照残しを避ける）
+					dst[key] = cloneValue(sVal);
+				} else {
+					// それ以外は参照のまま上書き
+					dst[key] = sVal;
+				}
+			}
+			return dst;
+		};
+
+		let out = {};
+		for (const src of sources) {
+			if (src == null) continue;
+
+			// src が plain object じゃないのを混ぜるのは事故りやすいので無視（必要ならここは方針変更）
+			if (!isPlainObject(src)) continue;
+
+			out = mergeInto(out, src);
+		}
+		return out;
 	}
 
 
@@ -520,6 +585,7 @@ class sweWindow {
 	minimizeSize = 200;	// px
 	rect = {};
 	lastStat;
+	justFocused;
 	winid;
 
 
@@ -579,9 +645,14 @@ class sweWindow {
 		this.adjust_wdNode_height();
 
 		// bringToFront ?
-		this.activateToByConfig();
+		//		this.activateToByConfig();
 
 		this.frNode.sweWindow = this;
+
+		// onReady
+		setTimeout(() => {
+			if (this.onReady) { this.onReady(this); }
+		}, 300);
 
 		return this;
 
@@ -674,7 +745,18 @@ class sweWindow {
 		this.winid = config.windowId;
 		this.title = config.windowTitle;
 		this.startAnimation = config.startAnimation;
+
+		this.onReady = config?.onReady;
+		this.onClose = config?.onClose;
+		this.onFocus = config?.onFocus;
+		this.onMaximize = config?.onMaximize;
+		this.onMUnaximize = config?.onMUnaximize;
+		this.onMinimize = config?.onMinimize;
+		this.onUnMinimize = config?.onUnMinimize;
+		this.onMoveStart = config?.onMoveStart;
+		this.onMoveEnd = config?.onMoveEnd;
 	}
+
 
 
 	/*--------------------------------------------------
@@ -950,6 +1032,14 @@ class sweWindow {
 
 
 
+
+
+
+
+
+
+
+
 	/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	
 		Resize Window
@@ -1057,24 +1147,27 @@ class sweWindow {
 				resizeFrom = "minimize";
 				resizeTo = this.lastStat === "maximize" ? "maximize" : "normal";
 			}
-			else if (this.frNode.classList.contains("maximize")) {
-				if (this.frNode.classList.contains("active")) {
-					resizeFrom = "maximize";
-					resizeTo = "minimize";
-				}
-				else {
-					this.bringToFront();
-					return;
-				}
-			}
 			else {
-				if (this.frNode.classList.contains("active")) {
-					resizeFrom = "normal";
-					resizeTo = "minimize";
+				if (this.onFocus) { this.onFocus.call(this, this); console.log("this.onFocus", this.onFocus); }
+				if (this.frNode.classList.contains("maximize")) {
+					if (this.frNode.classList.contains("active")) {
+						resizeFrom = "maximize";
+						resizeTo = "minimize";
+					}
+					else {
+						this.bringToFront();
+						return;
+					}
 				}
 				else {
-					this.bringToFront();
-					return;
+					if (this.frNode.classList.contains("active")) {
+						resizeFrom = "normal";
+						resizeTo = "minimize";
+					}
+					else {
+						this.bringToFront();
+						return;
+					}
 				}
 			}
 
@@ -1095,6 +1188,7 @@ class sweWindow {
 		this.frNode.addEventListener("pointerdown", (e) => {
 			e.preventDefault();
 			e.stopPropagation();
+			if (this.onFocus) { this.onFocus.call(this, this); console.log("this.onFocus", this.onFocus); }
 			this.bringToFront();
 		});
 
@@ -1105,7 +1199,6 @@ class sweWindow {
 		ウィンドウを前面に出す　
 	--------------------------------------------------*/
 	bringToFront = () => {
-
 		this.frNode.parentNode.querySelectorAll(".sweWindowFrame.active").forEach((swf) => {
 			if (swf !== this.frNode) {
 				swf.classList.remove("active");
@@ -1116,7 +1209,7 @@ class sweWindow {
 		this.frNode.classList.add("active");
 		this.twNode.classList.add("active");
 
-		this.scInst.reorderZ(this);
+		this.scInst.reorderZ(this, false);
 
 	};
 
@@ -1205,6 +1298,7 @@ class sweWindow {
 			this.frNode.style.removeProperty("--min-dx");
 			this.frNode.style.removeProperty("--min-dy");
 			this.frNode.style.display = "none";
+			if (this.onMinimize) { this.onMinimize(this); }
 		}, { once: true });
 
 	};
@@ -1239,6 +1333,7 @@ class sweWindow {
 			this.frNode.style.removeProperty("--from-width");
 			this.frNode.style.removeProperty("--from-height");
 			this.frNode.style.removeProperty("--to-height");
+			if (this.onMaximize) { this.onMaximize(this); }
 		}, { once: true });
 
 	};
@@ -1281,6 +1376,9 @@ class sweWindow {
 			this.frNode.classList.remove("restoreAnim");
 			this.frNode.classList.remove("minimize");
 
+			this.bringToFront();
+
+			if (this.onUnMinimize) { this.onUnMinimize(this); }
 		}, { once: true });
 
 	};
@@ -1321,6 +1419,7 @@ class sweWindow {
 			// 非表示（最小化状態）
 			this.frNode.style.display = "none";
 
+			if (this.onUnMinimize) { this.onUnMinimize(this); }
 		}, { once: true });
 
 	};
@@ -1366,6 +1465,8 @@ class sweWindow {
 			this.frNode.style.removeProperty("--min-dy");
 
 			this.adjust_wdNode_height();
+
+			if (this.onUnMinimize) { this.onUnMinimize(this); }
 
 			this.frNode.removeEventListener("transitionend", onEnd);
 		};
@@ -1427,6 +1528,9 @@ class sweWindow {
 			this.frNode.style.removeProperty("--min-dx");
 			this.frNode.style.removeProperty("--min-dy");
 
+			if (this.onUnMinimize) { this.onUnMinimize(this); }
+			if (this.onMaximize) { this.onMaximize(this); }
+
 		}, { once: true });
 
 	};
@@ -1451,6 +1555,8 @@ class sweWindow {
 
 				this.frNode.remove();
 				this.twNode?.remove();
+
+				if (this.onClose) { this.onClose(this); }
 
 				resolve();
 			};
@@ -1694,6 +1800,11 @@ class sweWindow {
 				const onPointerMove = (e) => {
 					if (!dragging) return;
 
+					if (!this.moveFlag && this.onMoveStart) {
+						this.onMoveStart(this);
+						this.moveFlag = true;
+					}
+
 					const dx = e.clientX - startMouse.x;
 					const dy = e.clientY - startMouse.y;
 
@@ -1743,6 +1854,11 @@ class sweWindow {
 
 					// コンテンツの高さ調整
 					this.adjust_wdNode_height();
+
+					if (this.moveFlag && this.onMoveEnd) {
+						this.onMoveEnd(this);
+						this.moveFlag = false;
+					}
 				};
 
 				document.addEventListener("pointermove", onPointerMove);

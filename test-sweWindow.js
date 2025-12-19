@@ -1,7 +1,17 @@
 
+
+var inputWindowId;
 var screen;
 
+var focusWindow = function () {
+	if (inputWindowId) { inputWindowId.value = this.winid; }
+};
+
+
 window.addEventListener('load', function () {
+
+	console.log("screen", screen);
+	inputWindowId = document.querySelector("#windowId");
 	screen = document.querySelector("#screen");
 
 	if (screen) {
@@ -35,9 +45,10 @@ window.addEventListener('load', function () {
 							return;
 						}
 						const action = windowAction.replace(/^window/, "").toLowerCase();
+						console.log("action", action);
 
 						if (action && ["focus", "maximize", "minimize", "close"].includes(action)) {
-							const windowId = document.querySelector("#windowId").value;
+							const windowId = inputWindowId.value;
 							console.log("windowId", windowId);
 							if (!windowId) { alert("no window-id " + windowId); return; }
 							const targetWindow = screen.sweScreen.getWindow(windowId);
