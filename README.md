@@ -73,7 +73,7 @@ sweWindowは、Vanilla JSで動作するブラウザ上で使えるウィンド�
   <div class="sweWindowContent"></div>
 </div>
 ```
-<br>
+<br><br>
 
 ## 3. 使用方法
 ### 3.1 起動
