@@ -4,6 +4,9 @@ sweWindowは、Vanilla JSで動作するブラウザ上で使えるウィンド�
 
 ![Screen capture](sweWindow-screenShot2.png)
 
+![基本中の基本](本システムは swdWindow.js と sweWindow.css だけです。-af1554)
+<kbd>本システムは swdWindow.js と sweWindow.css だけです。</kbd>
+
 基本的にWindowsやMacと同じようなウィンドウ機能です。<br>
 ウィンドウヘッダーをドラッグして移動でき、各辺と各角をドラッグしてリサイズ出来ます。<br>
 ウィンドウの右上にはボタンが３つあり、黄色：最小化、緑：最大化、赤：閉じるとなっています。<br>
@@ -252,3 +255,32 @@ newScreen.sweScreen.createWindow(document.querySelector("#window"), {windowId:"t
 theWindow = newScreen.getWindow("theWindow");
 theWindow.ctrlWin(action);
 ```
+<br>
+
+### 3.4 イベント定義
+ウィンドウに何かeventが発生した時に起動するイベントフックを付与できます。<br>
+起動時に適宜して下さい。<br>
+戻り値はバラバラなので、ご注意ください。<br>
+#### onReady
+> ウィンドウが完成した時に実行します
+#### onClose
+> ウィンドウが閉じた時に実行します
+#### onFocus
+> ウィンドウがフォーカスされた時に実行します
+#### onMaximize
+> ウィンドウが最大化された時に実行します
+#### onMUnaximize
+> ウィンドウが最大化解除された時に実行します
+#### onMinimize
+> ウィンドウが最省化された時に実行します
+#### onUnMinimize
+> ウィンドウが最省化解除された時に実行します
+#### onMoveStart
+> ウィンドウが移動され始めた時に実行さいます
+#### onMoveEnd
+> ウィンドウが移動され終わった時に実行されます
+<br><br>
+
+## 面積
+> 本リポジトリのソースコードは MIT ライセンスです。
+> 基本的に自由に利用できますが、詳細は各ソースファイル内のコメントをご確認ください。

@@ -27,7 +27,22 @@ class sweScreen {
 	_num(v) {
 		return (v == null || v === "") ? null : Number(v);
 	}
-	defaultConfig;
+
+	DEFAULT_CONFIG = Object.freeze({
+		rect: { top: 80, left: 80, width: 300, height: 300 },
+		type: "html",
+		minSize: { width: 200, height: 200 },
+		focus: false, // true | false
+		idDup: "error", // "error" | "replace"
+		startStatus: "normal",   // "normal" | "maximize" | "minimize"
+		flags: {
+			resizable: true,
+			movable: true,
+			closable: true,
+			minimizable: true,
+			maximizable: true
+		}
+	});
 
 
 	/*--------------------------------------------------
@@ -39,22 +54,6 @@ class sweScreen {
 			? document.querySelector(screen)
 			: (screen === null ? document.body : screen);
 
-		this.defaultConfig = {
-			rect: { top: 80, left: 80, width: 300, height: 300 },
-			type: "html",
-			minSize: { width: 200, height: 200 },
-			focus: false, // true | false
-			idDup: "error", // "error" | "replace"
-			startStatus: "normal",   // "normal" | "maximize" | "minimize"
-			flags: {
-				resizable: true,
-				movable: true,
-				closable: true,
-				minimizable: true,
-				maximizable: true
-			}
-		};
-
 		this.buildAllWindows(config);
 
 	}
@@ -62,7 +61,7 @@ class sweScreen {
 
 
 	buildAllWindows = (config) => {
-		this.config = this.configMerge(this.defaultConfig, config);
+		this.config = this.configMerge(this.DEFAULT_CONFIG, config);
 		//console.log("Screen Config", JSON.stringify(this.config));
 
 		// scNode がまともなノードじゃなければ何もしない
@@ -548,7 +547,7 @@ class sweWindow {
 			}
 			return value;
 		});
-		console.log("sweWindow config", config);
+
 		// コンフィグ展開
 		this.parseConfig(config);
 
@@ -1768,3 +1767,12 @@ class sweWindow {
 
 
 }
+
+
+
+/*
+Copyright (c) 2025 scripcrypt
+Licensed under the MIT License.
+You may obtain a copy of the License at:
+https://opensource.org/licenses/MIT
+*/
