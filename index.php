@@ -34,7 +34,18 @@
 <?php require("window_frame_6.html"); ?>
 	</div>
 	<script>
+		window.addEventListener('load', function () {
 
+			const screens = document.querySelectorAll(".sweScreen");
+
+			if (screens.length > 0) {
+				screens.forEach(ssr => {
+					console.log("ssr", ssr);
+					ssr.sweScreens = new sweScreen(ssr, { onFocus: focusWindow });
+				});
+			}
+
+		});
 	</script>
 </body>
 </html> 

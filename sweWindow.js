@@ -1,14 +1,3 @@
-window.addEventListener('load', function () {
-
-	const screens = document.querySelectorAll(".sweScreen");
-
-	if (screens.length > 0) {
-		screens.forEach(ssr => {
-			ssr.sweScreens = new sweScreen(ssr, { onFocus: focusWindow });
-		});
-	}
-
-});
 
 
 
@@ -53,7 +42,7 @@ class sweScreen {
 		this.scNode = typeof screen === "string"
 			? document.querySelector(screen)
 			: (screen === null ? document.body : screen);
-
+		console.log("[screen", this.scNode);
 		//		this.configMerge = this.mergeConfig;
 		this.configMerge = this.objectMerge;
 
