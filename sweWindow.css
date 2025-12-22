@@ -36,6 +36,10 @@
 	--windowTypeIcons-normal: \e835;
 	--width-padding: 200px;
 }
+.target-element {
+	touch-action: none;
+	/* ブラウザのデフォルト動作を無効化 */
+}
 html {
 	margin: 0;
 	padding: 0;

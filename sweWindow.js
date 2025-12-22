@@ -1129,6 +1129,7 @@ class sweWindow {
 		let resizeTo;
 
 		this.twNode.addEventListener("pointerdown", (e) => {
+			console.log(e);
 			e.preventDefault();
 			e.stopPropagation();
 
